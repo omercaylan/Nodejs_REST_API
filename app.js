@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const bodyParser = require('body-parser')
 
 const app = express(); //constructor
 
@@ -8,6 +9,22 @@ const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
 
 app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({ extended: false })); //hangi body parsiri kullanacaksin
+app.use(bodyParser.json());
+
+
+app.use((req, res, next) => {
+    res.header("Acces-Control-Allow-Origin", "*");
+    res.header("Acces-Control-Allow-Header", "Origin, X-Requested-With,Content-Type,Accept,Authorization"
+    );
+    if (req.method === 'OPTIONS') {
+        res.header('Acces-Control-Allow-Methods', 'PUT,POST,PATCH,DELETE,GET');
+        return res.status(200).json({});
+    }
+    next();
+});
+
+
 //burada lamda kullandik fakat farkli bir fonksiyon yazip onu burada verebilirdik handle reques
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
