@@ -1,12 +1,20 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose');
 
 const app = express(); //constructor
-
+//restnodeshopuser 
 
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
+
+mongoose.connect("mongodb+srv://restWorking:restWorking@rest-api-working-jnjpy.mongodb.net/REST-WORKING?retryWrites=true&w=majority",
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+//mongoose.connect('mongodb://user:password@domain.com:27017/dbname', { useNewUrlParser: true });
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false })); //hangi body parsiri kullanacaksin
